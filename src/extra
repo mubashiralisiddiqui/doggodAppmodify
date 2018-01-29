@@ -1,0 +1,68 @@
+ <View>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <Image
+                            style={{ height: 130, width: '100%', marginLeft: 'auto', marginRight: 'auto' }}
+                            source={require('../../../images/download1.jpg')}
+                            resizeMode="contain"
+                            // resizeMode
+                        />
+                    </View>
+                    <View style={styles.profilename}>
+                        <Text style={styles.logo} >A </Text>
+                        <Text style={{ color: 'white', fontSize: 20, marginTop: 10 }}>Asad Ullah </Text>
+                    </View>
+                    <View style={styles.menuIcon}>
+                        <Icon name="menu" color="#C3C4C5" onPress={() => navigate('DrawerOpen')} size={30} />
+                    </View>
+                </View>
+
+                <ScrollView >
+                    <View style={{ marginTop: 65, flexDirection: 'row', marginLeft: 40 ,backgroundColor:'transparent'}}>
+                        <Puzzle
+                            name="puzzle" size={20} color="#ffff"
+                            style={styles.Puzzleicon}
+                        />
+                        <Text style={{ fontSize: 18, marginLeft: 35 }}>7 task in total</Text>
+                    </View>
+                    <View style={{ marginLeft: 'auto', marginRight: 'auto', borderColor: 'gray' }}>
+                        <PercentageCircle radius={120} percent={55} color={"#FDD10C"} borderWidth={12} bgcolor="#808080" >
+                            <Text style={{ fontSize: 35, fontWeight: 'bold' }}>450</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>POINTS</Text>
+                        </PercentageCircle>
+                    </View>
+                    <Text style={{ marginLeft: 30, marginTop: 5, fontSize: 15 }}> Tasks done so far .....</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <App name="ios-apps" size={30} style={{ marginLeft: 35, marginTop: 20 }} />
+                        <Star name='stars' size={30} style={{ marginLeft: 20, marginTop: 20 }} color="#D26030" />
+                        <Text style={{ marginLeft: 5, marginTop: 25, fontWeight: 'bold', fontSize: 15 }}>#TASK1:</Text>
+                        <Text style={{ marginTop: 25, color: '#818082' }}> Tree planting</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <App name="ios-apps" size={30} style={{ marginLeft: 35, marginTop: 25 }} />
+                        <Star name='stars' size={30} style={styles.iconstyle} color="#FDD10C" />
+                        <Text style={{ marginLeft: 5, marginTop: 25, fontWeight: 'bold', fontSize: 15 }}>#TASK2:</Text>
+                        <Text style={{ marginTop: 25, color: '#818082' }}> Feeding Poor</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <App name="ios-apps" size={30} style={{ marginLeft: 35, marginTop: 25 }} />
+                        <Star name='stars' size={30} style={styles.iconstyle} color="#44DFD9" />
+                        <Text style={{ marginLeft: 10, marginTop: 25, fontWeight: 'bold', fontSize: 15 }}>#TASK3:</Text>
+                        <Text style={{ marginTop: 25, color: '#818082' }}> smiling</Text>
+                    </View>
+                    <Text style={styles.bottomborder}></Text>
+                    <View style={{ marginTop: 15 }}>
+                        <Text style={styles.domore}>Do more Tasks to </Text>
+                        <Text style={styles.domore}> increase your chances</Text>
+                        <Button title="Do it Good"
+                            textStyle={{ fontSize: 15, fontWeight: 'bold' }}
+                            buttonStyle={styles.button} />
+                    </View>
+                </ScrollView>
