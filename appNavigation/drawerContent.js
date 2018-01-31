@@ -42,7 +42,6 @@ class DrawerContainer extends React.Component {
                         source={require('../images/download.jpg')}
                         resizeMode="contain"
                     />
-                    {/* <Circle name="circle" size={30}title="A"/> */}
                 </View>
                 <Text
                     style={{

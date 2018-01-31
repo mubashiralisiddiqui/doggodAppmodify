@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigator, DrawerNavigator, DrawerItems, DrawerView, } from 'react-navigation';
-import { Homescreen, Dashbord, ScreeTwo, Profile, Share, Signup, Login, TakePhot } from '../src/components'
+import { Homescreen, Dashbord, ScreeTwo, Profile, Share, Signup, Login, TakePhot, Welcome } from '../src/components'
 import DrawerContent from './drawerContent';
 import { ScrollView, Dimensions } from 'react-native';
 import DrawerContainer from './drawerContent';

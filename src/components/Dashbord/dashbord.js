@@ -38,8 +38,6 @@ class Home extends React.Component {
                     rightComponent={
                         <Icon name='home' color="white" />
                     }
-                // centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
-
                 />
                 <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'column', marginTop: 100 }}>
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: '#5A5E60' }}>

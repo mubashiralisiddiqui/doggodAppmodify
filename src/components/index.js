@@ -6,7 +6,8 @@ import Share from './Share/share';
 // import Fblogin from './fblogin/fblogin';
 import Signup from './signup/signup';
 import Login from './login/login';
-import TakePhot from './takePhoto/takePhoto'
+import TakePhot from './takePhoto/takePhoto';
+import Welcome from './welcome/welcome'
 export {
     Homescreen,
     ScreeTwo,
@@ -15,5 +16,6 @@ export {
     Profile,
     TakePhot,
     Login,
-    Signup
+    Signup,
+    Welcome
 }

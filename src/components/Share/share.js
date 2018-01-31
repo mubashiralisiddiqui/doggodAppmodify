@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Share } from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Icon, Button } from 'react-native-elements';
 import OrderIcon from 'react-native-vector-icons/EvilIcons';
@@ -12,15 +12,25 @@ import App from 'react-native-vector-icons/Ionicons';
 import Star from 'react-native-vector-icons/MaterialIcons';
 
 // import { logout, shopkeeperSignup } from '../store/middleware/authMiddleWare'
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
-export default class Profile extends React.Component {
+const mapStateToProps = (state) => {
+    return {
+        userdetail: state.AuthReducers.detail
+    }
+}
+
+
+class Profile extends React.Component {
     constructor(props) {
         super(props)
 
     }
     render() {
         const { navigate } = this.props.navigation;
+        console.log("userdetail", this.props.userdetail.name)
+        var lettr = this.props.userdetail.name.split('')
+        const firstletter = lettr[0]
         return (
             <View style={styles.container}>
                 <View style={{ border: 2, borderColor: "red", height: 130, marginTop: -5 }}>
@@ -38,8 +48,8 @@ export default class Profile extends React.Component {
                             />
                         </View>
                         <View style={styles.profilename}>
-                            <Text style={styles.logo} >A </Text>
-                            <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>Asad Ullah </Text>
+                            <Text style={styles.logo} >{firstletter} </Text>
+                            <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>{this.props.userdetail.name}</Text>
                         </View>
                         <View style={styles.menuIcon}>
                             <Icon name="menu" color="#C3C4C5" onPress={() => navigate('DrawerOpen')} size={35} />
@@ -120,3 +130,4 @@ const styles = StyleSheet.create({
         marginTop: -80
     },
 })
+export default connect(mapStateToProps, null)(Profile);

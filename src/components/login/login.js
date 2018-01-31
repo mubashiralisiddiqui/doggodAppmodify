@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import * as firebase from 'firebase'
 import { Header, FormInput, FormLabel, Button, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import SplashScreen from 'react-native-splash-screen'
 import { userLogin } from '../../store/middleware/authMiddleware'
 // import LoginIcon from 'react-native-vector-icons/SimpleLineIcons'
 import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -30,14 +30,15 @@ class UserLogin extends Component {
             isLogin: false
         };
     }
+    componentDidMount() {
+        SplashScreen.hide();
+    }
 
     static navigationOptions = {
         header: null,
     }
 
-    // componentDidMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    // }
+
     handleBackButton() {
         return true;
     }

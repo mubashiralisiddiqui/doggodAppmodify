@@ -1,23 +1,19 @@
 import { NativeModules } from 'react-native';
 
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Button, Header, Icon } from 'react-native-elements';
+import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
+import { Button, Header, Icon, Avatar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import Information from 'react-native-vector-icons/MaterialIcons';
 import Camera from 'react-native-vector-icons/Entypo';
-// import ImagePicker from 'react-native-image-picker';
-import * as ImagePicker from 'react-native-image-picker'
-// var ImagePicker = require('react-native-image-picker');
-// var { NativeModules } = require('react-native');
-// var UIImagePickerManager = NativeModules.UIImagePickerManager;
-// import  font from '../../font/Fonts'
-// import abc from '../'
+import * as ImagePicker from 'react-native-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 export default class TakePhot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            avatarSource: ''
+            avatarSource: null
         }
         this.openCamera = this.openCamera.bind(this)
 
@@ -27,7 +23,6 @@ export default class TakePhot extends React.Component {
         headerTitleStyle: {
             color: '#ffff',
             textAlign: 'center',
-            // marginLeft: 70
         },
         headerTintColor: '#ffff',
         headerStyle: {
@@ -35,15 +30,6 @@ export default class TakePhot extends React.Component {
         }
     }
     openCamera() {
-        // var options = {
-        //     quality: 1.0,
-        //     maxWidth: 500,
-        //     maxHeight: 500,
-        //     storageOptions: {
-        //         skipBackup: true
-        //     }
-        // }
-
         var options = {
             title: "Select Profile Picture",
             storageOptions: {
@@ -61,8 +47,12 @@ export default class TakePhot extends React.Component {
                 console.log("User tapped custom button: ", response.customButton);
             } else {
                 let source = { uri: response.uri };
+                console.log("source", source)
                 this.setState({
-                    avatarSource: source
+                    avatarSource: source,
+                    defaultAvatar: {
+                        uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
+                    },
                 });
             }
         });
@@ -72,7 +62,7 @@ export default class TakePhot extends React.Component {
         const { navigate } = this.props.navigation;
         console.log("navigate", navigate)
         return (
-            <View style={{ flex: 1, flexDirection: 'column' }}>
+            <KeyboardAwareScrollView>
                 <Header
                     outerContainerStyles={{ backgroundColor: '#FDD10C' }}
                     leftComponent={
@@ -88,10 +78,24 @@ export default class TakePhot extends React.Component {
                             onPress={() => navigate('Dashbord')}
                         />
                     }
-                // centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }} Dashbord
-
                 />
-                <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View style={{ justifyContent: 'center', flex: 1, marginTop: 18 }}>
+                    <Avatar
+                        xlarge
+                        rounded
+                        containerStyle={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginBottom: 10,
+                        }}
+                        source={
+                            this.state.avatarSource == null
+                                ? this.state.defaultAvatar
+                                : this.state.avatarSource
+                        }
+                        onPress={() => console.log("Works!")}
+                        activeOpacity={0.7}
+                    />
                     <View style={{
                         borderColor: 'gray', borderWidth: 1,
                         width: 300,
@@ -99,33 +103,21 @@ export default class TakePhot extends React.Component {
                         marginLeft: 'auto',
                         marginRight: 'auto',
                         justifyContent: 'center',
-                        // flex: 1
-                        // paddingTop: 10
 
                     }}>
-                        {/* <TouchableOpacity  > */}
-                        <Text style={{ textAlign: 'center', marginTop:10 }}>Upload Your Image</Text>
+
+                        <Text style={{ textAlign: 'center', marginTop: 10 }}>Upload Your Image</Text>
                         <View style={{ justifyContent: 'center', flex: 1 }}>
-                            
+
                             <Camera size={30} name="camera" style={{ marginLeft: 10, marginBottom: 30 }}
                                 onPress={() => this.openCamera()}
                             />
                         </View>
-                        {/* </TouchableOpacity> */}
                     </View>
-
-
-
-                    {/* <Button title="GO TO NEXT TASK"
-                    //paddingTop:20 marginTop:10
-                        buttonStyle={{ backgroundColor: '#FDD10C', width: 250, height: 50, marginLeft: 40, marginTop: 20 }}
-                        textStyle={{ fontSize: 20, fontWeight: 'bold', }}
-                    /> */}
                     <View style={{
-                        // backgroundColor: this.state.text,
                         borderBottomColor: '#000000',
-                        // borderBottomWidth: 1
                         width: 300,
+                        height: 100,
                         marginLeft: 'auto',
                         marginRight: 'auto',
                         marginTop: 20,
@@ -133,7 +125,6 @@ export default class TakePhot extends React.Component {
                     }}
                     >
                         <TextInput
-                            // {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
                             editable={true}
                             numberOfLines={4}
                             maxLength={40}
@@ -146,10 +137,8 @@ export default class TakePhot extends React.Component {
                         buttonStyle={{ backgroundColor: '#FDD10C', width: 250, height: 50, marginLeft: 40, marginTop: 20 }}
                         textStyle={{ fontSize: 20, fontWeight: 'bold', }}
                     />
-
-
                 </View>
-            </View>
+            </KeyboardAwareScrollView>
         )
     }
 }

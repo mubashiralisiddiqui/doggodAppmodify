@@ -8,13 +8,24 @@ export const userLogin = (obj, navigate) => {
     return dispatch => {
         firebase.auth().signInWithEmailAndPassword(obj.email, obj.pasword)
             .then((user) => {
+                console.log("verified", user.emailVerified)
                 var userId = firebase.auth().currentUser.uid;
                 firebase.database().ref('users/' + userId).on('value', (data) => {
                     var obj = data.val();
                     console.log("user===>", user, obj)
-                    dispatch(AuthAction.userLogin(obj))
-                    ToastAndroid.show('lOGIN SUCCESSFUL !', ToastAndroid.SHORT);
-                    navigate('login');
+
+
+                    if (user.emailVerified === true) {
+                        dispatch(AuthAction.userLogin(obj))
+                        ToastAndroid.show('lOGIN SUCCESSFUL !', ToastAndroid.SHORT);
+                        navigate('login');
+                    }
+                    else {
+                        // dispatch(AuthAction.verifyemail())
+                        ToastAndroid.show('you have not verified your email!', ToastAndroid.SHORT);
+                        navigate('SignedOut')
+                    }
+
                 })
             })
             .catch((error) => {
