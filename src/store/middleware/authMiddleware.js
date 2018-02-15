@@ -13,19 +13,16 @@ export const userLogin = (obj, navigate) => {
                 firebase.database().ref('users/' + userId).on('value', (data) => {
                     var obj = data.val();
                     console.log("user===>", user, obj)
-
-
                     if (user.emailVerified === true) {
                         dispatch(AuthAction.userLogin(obj))
                         ToastAndroid.show('lOGIN SUCCESSFUL !', ToastAndroid.SHORT);
                         navigate('login');
                     }
                     else {
-                        // dispatch(AuthAction.verifyemail())
+                        dispatch(AuthAction.verifyemail())
                         ToastAndroid.show('you have not verified your email!', ToastAndroid.SHORT);
                         navigate('SignedOut')
                     }
-
                 })
             })
             .catch((error) => {
@@ -33,7 +30,6 @@ export const userLogin = (obj, navigate) => {
                 alert(errorMessage);
             });
     }
-
 }
 export const userSignup = (obj, navigate) => {
     return dispatch => {
@@ -43,7 +39,6 @@ export const userSignup = (obj, navigate) => {
             .then(() => {
                 var user = firebase.auth().currentUser;
                 console.log('user', user)
-
                 user.sendEmailVerification().then((res) => {
                     alert("an email has been sent to your mail acoount please verfiy")
                     // user.emailVerified()
@@ -74,6 +69,15 @@ export const userSignup = (obj, navigate) => {
             });
     }
 }
+export const sendverificationemail = () => {
+    return dispatch => {
+        var user = firebase.auth().currentUser;
+        user.sendEmailVerification().then(() => {
+            alert('email is havebeen sent check your email')
+        })
+    }
+}
+
 export const logout = (navigate) => {
     return dispatch => {
         firebase.auth().signOut().then(function () {

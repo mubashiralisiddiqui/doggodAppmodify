@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, Share } from 'react-native'
 import { NavigationActions } from 'react-navigation';
-import { Icon, Button } from 'react-native-elements';
+import { Icon, Button, Header, Avatar } from 'react-native-elements';
 import OrderIcon from 'react-native-vector-icons/EvilIcons';
 import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
 import Help from 'react-native-vector-icons/Feather';
@@ -10,6 +10,9 @@ import Puzzle from 'react-native-vector-icons/Foundation';
 import PercentageCircle from 'react-native-percentage-circle';
 import App from 'react-native-vector-icons/Ionicons';
 import Star from 'react-native-vector-icons/MaterialIcons';
+import Camera from 'react-native-vector-icons/Entypo';
+import * as ImagePicker from 'react-native-image-picker';
+
 
 // import { logout, shopkeeperSignup } from '../store/middleware/authMiddleWare'
 import { connect } from 'react-redux';
@@ -21,10 +24,48 @@ const mapStateToProps = (state) => {
 }
 
 
-class Profile extends React.Component {
+
+class ShareComponent extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            avatarSource: null,
+            defaultAvatar: {
+                uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
+            },
+        }
 
+    }
+    static navigationOptions={
+        header:null
+    }
+    openCamera() {
+        var options = {
+            title: "Select Profile Picture",
+            storageOptions: {
+                skipBackup: true,
+                path: "images"
+            }
+        };
+        ImagePicker.launchCamera(options, response => {
+            if (response.didCancel) {
+                console.log("User cancelled image picker");
+            } else if (response.error) {
+                console.log("ImagePicker Error: ", response.error);
+            } else if (response.customButton) {
+                console.log("User tapped custom button: ", response.customButton);
+            } else {
+                let source = { uri: response.uri };
+                console.log("source", source)
+                this.setState({
+                    avatarSource: source,
+                    defaultAvatar: {
+                        uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
+                    },
+                });
+                // var storageRef = firebase.storage().ref().child("content://com.dogoodapp.provider/app_images/Pictures/image-a2d03d21-71e5-4ca1-a220-763bff2d3302.jpg");
+            }
+        });
     }
     render() {
         const { navigate } = this.props.navigation;
@@ -33,54 +74,100 @@ class Profile extends React.Component {
         const firstletter = lettr[0]
         return (
             <View style={styles.container}>
-                <View style={{ border: 2, borderColor: "red", height: 130, marginTop: -5 }}>
-                    <View>
-                        <View
-                            style={{
-                                display: 'flex', flexDirection: 'row',
-                                justifyContent: 'center',
-                                position: 'absolute',
-                            }}>
-                            <Image
-                                style={{ height: 130, width: '100%', marginLeft: 'auto', marginRight: 'auto' }}
-                                source={require('../../../images/download1.jpg')}
-                                resizeMode="contain"
-                            />
-                        </View>
-                        <View style={styles.profilename}>
-                            <Text style={styles.logo} >{firstletter} </Text>
-                            <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>{this.props.userdetail.name}</Text>
-                        </View>
-                        <View style={styles.menuIcon}>
-                            <Icon name="menu" color="#C3C4C5" onPress={() => navigate('DrawerOpen')} size={35} />
-                        </View>
+
+                <Header
+                    outerContainerStyles={{ backgroundColor: '#FDD10C' }}
+                    leftComponent={
+                        <Icon
+                            name="menu"
+                            color="white"
+                            size={30}
+                            onPress={() => navigate('DrawerOpen')}
+                        />
+                    }
+                    rightComponent={
+                        <Icon name='home' color="white"
+                        onPress={()=>{navigate('Dashbord')}}
+                         />
+                    }
+                />
+
+                <View style={{
+                    width: 300,
+                    height: 180,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    justifyContent: 'space-around',
+                    backgroundColor: '#F8F8F8',
+                    paddingTop: 5,
+                    marginTop: 50
+
+                }}>
+                    <View style={
+                        {
+                            flex: 1, display: 'flex', justifyContent: 'space-around',
+                            flexDirection: 'row', marginTop: 5
+                        }
+                    }>
+
+                        <Camera size={30} name="camera"
+                            style={{ marginLeft: 10, }}
+                            onPress={() => this.openCamera()}
+                        />
+                        <Text style={{
+                            textAlign: 'center',
+                            //  marginLeft: 'auto',
+                            // marginRight: 'auto',
+                            fontSize: 16
+                        }}>
+                            PICTURE
+                    </Text>
+                    <Text style={{
+                            textAlign: 'center',
+                            //  marginLeft: 'auto',
+                            // marginRight: 'auto',
+                            fontSize: 16
+                        }}>          
+                    </Text>
                     </View>
-                </View>
-                <View style={{ marginTop: 10, flexDirection: 'row', marginLeft: 40 }}>
-                    <Puzzle
-                        name="puzzle" size={30} color="#ffff"
-                        style={styles.Puzzleicon}
+                    <Avatar
+                        large
+                        rounded
+                        containerStyle={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginBottom: 20,
+                            // marginTop: 20
+                        }}
+                        source={
+                            this.state.avatarSource == null
+                                ? this.state.defaultAvatar
+                                : this.state.avatarSource
+                        }
+                        onPress={() => console.log("Works!")}
+                        activeOpacity={0.7}
                     />
-                    <Text style={{ fontSize: 18, marginLeft: 20 }}>7 task in total</Text>
                 </View>
-                <View
-                    style={{
-                        marginLeft: 'auto', marginRight: 'auto',
-                        paddingLeft: 'auto', paddingRight: 'auto',
-                        width: 220, height: 220, borderRadius: 110,
-                        backgroundColor: '#FDD10C',
-                        justifyContent: 'center',
-                        marginTop: 40
-                    }}>
-                    <Text style={{ color: 'white', textAlign: 'center', fontSize: 55, fontWeight: 'bold' }}>450</Text>
-                    <Text style={{ color: 'white', textAlign: 'center', fontSize: 25, }}>Points</Text>
-                </View>
+                <View style={{ marginTop: 50 }}>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: '#5A5E60', fontFamily: 'RobotoCondensed-Regular' }}>
+                        Plant More
+                </Text>
 
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                        Take your picture smiling and  upload
+                    </Text>
+
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                        it other to see with the hashtag
+                    </Text>
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                        Do It Good
+                    </Text>
+                </View>
                 <Button title="Share it On Facebook"
-                    icon={{ name: 'share', size: 30 }}
-                    textStyle={{ fontSize: 20, fontWeight: 'bold' }}
+                    icon={{ name: 'share', size: 25 }}
+                    textStyle={{ fontSize: 20,fontFamily:'Roboto-Bold' }}
                     buttonStyle={styles.button} />
-
             </View>
         )
     }
@@ -89,13 +176,13 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6',
+        backgroundColor: '#ffff',
     },
     button: {
         backgroundColor: '#FDD10C',
         width: 250, height: 50, marginLeft: 'auto', marginTop: 10,
         marginRight: 'auto',
-        marginTop: 30
+        marginTop: 20
     },
     logo: {
         width: 70, height: 70,
@@ -130,4 +217,4 @@ const styles = StyleSheet.create({
         marginTop: -80
     },
 })
-export default connect(mapStateToProps, null)(Profile);
+export default connect(mapStateToProps, null)(ShareComponent);

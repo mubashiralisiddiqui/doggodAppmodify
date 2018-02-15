@@ -1,33 +1,26 @@
-import { NativeModules } from 'react-native';
 
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
-import { Button, Header, Icon, Avatar } from 'react-native-elements';
+import { View, Text, TouchableOpacity, TextInput, Image, ToastAndroid } from 'react-native';
+import { Button, Header, Icon, Avatar, CheckBox } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import Information from 'react-native-vector-icons/MaterialIcons';
 import Camera from 'react-native-vector-icons/Entypo';
 import * as ImagePicker from 'react-native-image-picker';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import firebase from 'firebase';
 export default class TakePhot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            avatarSource: null
+            avatarSource: null,
+            defaultAvatar: {
+                uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
+            },
+            checked: false
         }
         this.openCamera = this.openCamera.bind(this)
-
     }
     static navigationOptions = {
-        headerTitle: ' Home',
-        headerTitleStyle: {
-            color: '#ffff',
-            textAlign: 'center',
-        },
-        headerTintColor: '#ffff',
-        headerStyle: {
-            backgroundColor: '#FDD10C'
-        }
+       header:null
     }
     openCamera() {
         var options = {
@@ -38,7 +31,7 @@ export default class TakePhot extends React.Component {
             }
         };
 
-        ImagePicker.showImagePicker(options, response => {
+        ImagePicker.launchImageLibrary(options, response => {
             if (response.didCancel) {
                 console.log("User cancelled image picker");
             } else if (response.error) {
@@ -54,15 +47,25 @@ export default class TakePhot extends React.Component {
                         uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
                     },
                 });
+                var storageRef = firebase.storage().ref().child("content://com.dogoodapp.provider/app_images/Pictures/image-a2d03d21-71e5-4ca1-a220-763bff2d3302.jpg");
             }
         });
     }
-
+    toggleCheked() {
+        this.setState({
+            checked: !this.state.checked
+        })
+    }
+    handleSubmit() {
+        this.state.checked ?
+            this.props.navigation.navigate('Home') :
+            ToastAndroid.show('please checked first', ToastAndroid.SHORT);
+    }
     render() {
         const { navigate } = this.props.navigation;
         console.log("navigate", navigate)
         return (
-            <KeyboardAwareScrollView>
+            <View style={{ flex: 1, backgroundColor: '#ffff' }}>
                 <Header
                     outerContainerStyles={{ backgroundColor: '#FDD10C' }}
                     leftComponent={
@@ -79,7 +82,7 @@ export default class TakePhot extends React.Component {
                         />
                     }
                 />
-                <View style={{ justifyContent: 'center', flex: 1, marginTop: 18 }}>
+                <View style={{ justifyContent: 'center', flex: 1, marginTop: -40 }}>
                     <Avatar
                         xlarge
                         rounded
@@ -96,49 +99,81 @@ export default class TakePhot extends React.Component {
                         onPress={() => console.log("Works!")}
                         activeOpacity={0.7}
                     />
-                    <View style={{
-                        borderColor: 'gray', borderWidth: 1,
-                        width: 300,
-                        height: 50,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        justifyContent: 'center',
-
-                    }}>
-
-                        <Text style={{ textAlign: 'center', marginTop: 10 }}>Upload Your Image</Text>
-                        <View style={{ justifyContent: 'center', flex: 1 }}>
-
-                            <Camera size={30} name="camera" style={{ marginLeft: 10, marginBottom: 30 }}
-                                onPress={() => this.openCamera()}
-                            />
-                        </View>
+                    <View style={styles.cameraContainer}>
+                        <Camera size={25} name="camera"
+                            style={{ marginLeft: -20, }}
+                            onPress={() => this.openCamera()}
+                        />
+                        <Text style={{ textAlign: 'center', marginRight: 60, fontFamily: 'Roboto', fontSize: 15 }}>
+                            Upload Your Photo
+                        </Text>
                     </View>
-                    <View style={{
-                        borderBottomColor: '#000000',
-                        width: 300,
-                        height: 100,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginTop: 20,
-                        borderColor: 'gray', borderWidth: 1,
-                    }}
-                    >
+                    <View style={styles.comments}>
                         <TextInput
                             editable={true}
                             numberOfLines={4}
-                            maxLength={40}
-                            placeholder="write your comments"
+                            maxLength={80}
+                            multiline={true}
+                            placeholder="write your review"
                             underlineColorAndroid="transparent"
-
+                            style={{ marginTop: -30, paddingLeft: 10, fontSize: 15,fontFamily:'Roboto-Light' }}
                         />
                     </View>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}> */}
+                        <CheckBox
+                            center
+                            title='I am submitting my original task'
+                            iconRight
+                            iconType='material'
+                            checkedIcon='check'
+                            uncheckedIcon='check'
+                            checkedColor='green'
+                            checked={this.state.checked}
+                            containerStyle={{ 
+                                backgroundColor: '#F8F8F8', width: 300 ,
+                                marginLeft:'auto',
+                                marginRight:'auto',
+                                marginTop:15
+                            }}
+                            textStyle={this.state.checked?{ fontFamily: 'Roboto-Light',fontWeight:'italic',color:'green'}:{fontFamily: 'Roboto-Light',fontWeight:'italic'}}
+                            onPress={() => { this.toggleCheked() }}
+                        />
+                    {/* </View> */}
                     <Button title="Do It Good"
-                        buttonStyle={{ backgroundColor: '#FDD10C', width: 250, height: 50, marginLeft: 40, marginTop: 20 }}
-                        textStyle={{ fontSize: 20, fontWeight: 'bold', }}
+                        onPress={() => { this.handleSubmit() }}
+                        buttonStyle={styles.button}
+                        textStyle={{ fontSize: 20, fontFamily: 'Roboto-Bold' }}
                     />
                 </View>
-            </KeyboardAwareScrollView>
+            </View>
         )
+    }
+}
+const styles = {
+    button: {
+        backgroundColor: '#FDD10C',
+        width: 200, height: 55,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 20
+    },
+    comments: {
+        borderBottomColor: '#000000',
+        width: 300,
+        height: 130,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 10,
+        backgroundColor: '#F8F8F8'
+    },
+    cameraContainer: {
+        width: 300,
+        height: 50,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        justifyContent: 'space-around',
+        backgroundColor: '#F8F8F8',
+        flexDirection: 'row',
+        paddingTop: 10
     }
 }

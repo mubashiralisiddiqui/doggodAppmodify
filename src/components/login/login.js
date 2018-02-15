@@ -15,7 +15,7 @@ import * as firebase from 'firebase'
 import { Header, FormInput, FormLabel, Button, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SplashScreen from 'react-native-splash-screen'
-import { userLogin } from '../../store/middleware/authMiddleware'
+import { userLogin, sendverificationemail } from '../../store/middleware/authMiddleware'
 // import LoginIcon from 'react-native-vector-icons/SimpleLineIcons'
 import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -100,26 +100,40 @@ class UserLogin extends Component {
                         onPress={() => this._handleLogin()}
                         textStyle={{ fontFamily: 'Times New Roman', fontWeight: 'bold' }}
                     />
-                    <View style={loginStyles.registerSuggestionText}>
-                        <Text>Not Registered</Text>
-                        <TouchableOpacity onPress={() => navigate("SignupScreen")}>
-                            <Text style={{ fontWeight: "bold" }}>Signup Now!</Text>
-                        </TouchableOpacity>
+                    <View >
+
+                        {this.props.isVerified ?
+                            <View style={loginStyles.registerSuggestionText}>
+                                <Text>Not Registered</Text>
+                                <TouchableOpacity onPress={() => navigate("SignupScreen")}>
+                                    <Text style={{ fontWeight: "bold" }}>Signup Now!</Text>
+                                </TouchableOpacity>
+                            </View> :
+                            <TouchableOpacity onPress={() =>this.props.sendemail()}>
+                                <View style={loginStyles.registerSuggestionText} >
+                                    <Text> your email is not verifed </Text>
+                                    <Text> check your emai if not received? </Text>
+                                    <Text style={{ fontWeight: "bold", marginTop: 20 }}>resend verification email!</Text>
+                                </View>
+                            </TouchableOpacity>}
+
                     </View>
                 </View>
             </KeyboardAwareScrollView>
         );
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         isLogin: state.AuthReducers.isLoggedIn,
-//         deviceID: state.deviceIDReducer.deviceID
-//     }
-// }
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        login: (payload, navigate) => { dispatch(userLogin(payload, navigate)) }
+        isLogin: state.AuthReducers.isLoggedIn,
+        isVerified: state.AuthReducers.verified
     }
 }
-export default connect(null, mapDispatchToProps)(UserLogin);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (payload, navigate) => { dispatch(userLogin(payload, navigate)) },
+        sendemail: () => { dispatch(sendverificationemail()) }
+
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(UserLogin);

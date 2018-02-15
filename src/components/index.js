@@ -1,5 +1,5 @@
 import Homescreen from './HomeScreen/homeScreen'
-import ScreeTwo from './screentwo/screentwo'
+import Help from './help/help'
 import Dashbord from './Dashbord/dashbord'
 import Profile from './Profile/profile';
 import Share from './Share/share';
@@ -10,7 +10,7 @@ import TakePhot from './takePhoto/takePhoto';
 import Welcome from './welcome/welcome'
 export {
     Homescreen,
-    ScreeTwo,
+    Help,
     Dashbord,
     Share,
     Profile,

@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { NavigationActions } from 'react-navigation';
-import { Icon, Button } from 'react-native-elements';
-import Circle from 'react-native-vector-icons/Entypo';
+import { Icon, Button, Avatar } from 'react-native-elements';
+import Circle from 'react-native-vector-icons/MaterialIcons';
 import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
 import { connect } from 'react-redux';
 
@@ -21,13 +21,11 @@ class DrawerContainer extends React.Component {
     }
     static navigationOptions = {
         header: null,
-        tintColor: 'red'
     }
     render() {
         const { navigation } = this.props;
         var lettr = this.props.userdetail.name.split('')
         const firstletter = lettr[0]
-        console.log("======", firstletter)
         return (
             <View style={styles.container}>
                 <View
@@ -43,50 +41,46 @@ class DrawerContainer extends React.Component {
                         resizeMode="contain"
                     />
                 </View>
-                <Text
-                    style={{
-                        width: 70, height: 70,
-                        borderRadius: 100, borderColor: 'white', borderWidth: 1.5,
-                        textAlign: 'center',
-                        fontSize: 50,
-                        color: 'white',
-                        fontWeight: 'bold',
-                        paddingTop: 0,
+                <Avatar
+                    large
+                    rounded
+                    title={firstletter}
+
+                    onPress={() => console.log("Works!")}
+                    activeOpacity={0.7}
+                    containerStyle={{
                         marginLeft: 20,
                         marginTop: 15,
                         backgroundColor: '#FDD10C'
-
                     }}
-                >
-                    {firstletter}
-
-                </Text>
-                <Text style={{ color: 'white', fontSize: 15, marginLeft: 25, fontWeight: 'bold', marginTop: 10 }}>
+                />
+                <Text style={{ color: 'white', fontSize: 18, marginLeft: 25, fontWeight: 'bold', marginTop: 10 }}>
                     {this.props.userdetail.name}
                 </Text>
                 <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 10 }}>
-                    <Icon name="person" color="#C3C4C5" />
+                    <Icon name="person" color="#5A5E61" />
                     <Text
                         onPress={() => navigation.navigate('ProfileScreen')}
-                        style={styles.uglyDrawerItem}>
+                        style={styles.uglyDrawerItem}
+                    >
                         PROFILE
                 </Text>
 
                 </View>
                 <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', marginLeft: 20 }}>
-                    <Icon name="home" color="#C3C4C5" />
+                    <Icon name="home" color="#5A5E61" />
                     <Text
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('Dashbord')}
                         style={styles.uglyDrawerItem}>
                         HOME
                 </Text>
                 </TouchableOpacity>
                 <View style={{
                     display: 'flex', flexDirection: 'row',
-                    paddingLeft: 20, borderBottomColor: '#E1E2E2',
+                    paddingLeft: 20, borderBottomColor: '#BFC1C2s',
                     borderBottomWidth: 2
                 }}>
-                    <Icon name="share" color="#C3C4C5" />
+                    <Icon name="share" color="#5A5E61" />
                     <Text
                         onPress={() => navigation.navigate('shareScreen')}
                         style={styles.uglyDrawerItem}>
@@ -95,10 +89,9 @@ class DrawerContainer extends React.Component {
 
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
-                    <Icon name="help" color="#C3C4C5" size={30} style={{ marginTop: 15 }} />
+                    <Circle name="help-outline" color="#A1A4A6" size={30} style={{ marginTop: 15 }} />
                     <Text
-                        // onPress={() => this.logoutm()}Dashbord
-                        onPress={() => navigation.navigate('Dashbord')}
+                        onPress={() => navigation.navigate('Help')}
                         style={styles.uglyDrawerItem}
                     >
 
@@ -106,13 +99,11 @@ class DrawerContainer extends React.Component {
                      </Text>
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
-                    <LoginIcon name="logout" color="#C3C4C5" size={30} style={{ marginTop: 15 }} />
+                    <LoginIcon name="logout" color="#A1A4A6" size={30} style={{ marginTop: 15 }} />
                     <Text
                         onPress={() => this.logoutm()}
-                        // onPress={() => navigation.navigate('LoginScreen')}
                         style={styles.uglyDrawerItem}
                     >
-
                         Log Out
                      </Text>
                 </View>
@@ -128,10 +119,12 @@ const styles = StyleSheet.create({
     },
     uglyDrawerItem: {
         fontSize: 18,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         color: '#FDD10C',
         padding: 10,
         margin: 5,
+        width: 100,
+        fontFamily:'Roboto-Bold'
     },
     menuheader: {
         fontSize: 18,
