@@ -1,35 +1,11 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { Button, Header, Icon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
 import Information from 'react-native-vector-icons/MaterialIcons'
 
-// import  font from '../../font/Fonts'
-
 export default class Home extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-    static navigationOptions = {
-        header:null
-        // headerTitle: ' Home',
-        // headerTitleStyle: {
-        //     color: '#ffff',
-        //     textAlign: 'center',
-        //     // marginLeft: 70
-        // },
-        // // headerTintColor: '#ffff',
-        // headerStyle: {
-        //     backgroundColor: '#FDD10C'
-        // }
-
-
-    }
-
     render() {
         const { navigate } = this.props.navigation;
-        console.log("navigate", navigate)
         return (
             <View style={{ flex: 1, flexDirection: 'column', backgroundColor: '#ffff' }}>
                 <Header

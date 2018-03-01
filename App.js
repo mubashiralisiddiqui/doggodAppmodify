@@ -6,8 +6,6 @@ import {
   View
 } from 'react-native';
 import { connect } from 'react-redux';
-
-// import { Homescreen } from './src/screens/index'
 import { CreateRootNavigator } from './appNavigation/appNavigation';
 import Store from './src/store';
 import getTheme from './native-base-theme/components';
@@ -24,20 +22,16 @@ var config = {
 };
 firebase.initializeApp(config);
 
-class App extends Component<{}> {
+class App extends Component {
 
   render() {
     console.log("islogin==>", this.props.islogin)
     const Mainroot = CreateRootNavigator(this.props.islogin)
     return (
-
-
       <Mainroot />
-
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -60,6 +54,5 @@ const mapStateToProps = (state) => {
   return {
     islogin: state.AuthReducers.isLoggedIn
   }
-
 }
 export default connect(mapStateToProps, null)(App)

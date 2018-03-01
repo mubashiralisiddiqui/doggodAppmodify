@@ -5,16 +5,8 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import smile from '../../../images/smile.jpg'
-
 var i = 0;
 class Help extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-
     static navigationOptions = {
         drawerLabel: 'Home',
         drawerIcon: ({ tintColor }) => (
@@ -22,10 +14,7 @@ class Help extends React.Component {
         ),
         header: null
     };
-
-
     render() {
-        console.log("state of text", this.state)
         const { navigate } = this.props.navigation;
         return (
             <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'column' }}>
@@ -45,8 +34,6 @@ class Help extends React.Component {
                         />
                     }
                 />
-
-
                 <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'column', }}>
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: '#5A5E61' }}>
                         How To Win
@@ -78,7 +65,6 @@ class Help extends React.Component {
         )
     }
 }
-
 const mapStateToProps = (state) => {
     return {
         userdetail: state.AuthReducers.detail

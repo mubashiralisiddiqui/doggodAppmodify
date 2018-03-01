@@ -1,20 +1,18 @@
 
 
 import { AuthAction } from '../actions/authActions';
-import { ToastAndroid } from 'react-native'
+import { ToastAndroid, AsyncStorage } from 'react-native'
 import firebase from 'firebase'
 export const userLogin = (obj, navigate) => {
-    console.log(obj)
     return dispatch => {
         firebase.auth().signInWithEmailAndPassword(obj.email, obj.pasword)
             .then((user) => {
-                console.log("verified", user.emailVerified)
                 var userId = firebase.auth().currentUser.uid;
                 firebase.database().ref('users/' + userId).on('value', (data) => {
                     var obj = data.val();
-                    console.log("user===>", user, obj)
                     if (user.emailVerified === true) {
                         dispatch(AuthAction.userLogin(obj))
+                        AsyncStorage.setItem('user', JSON.stringify(obj))
                         ToastAndroid.show('lOGIN SUCCESSFUL !', ToastAndroid.SHORT);
                         navigate('login');
                     }
@@ -38,11 +36,8 @@ export const userSignup = (obj, navigate) => {
             .createUserWithEmailAndPassword(obj.email, obj.pasword)
             .then(() => {
                 var user = firebase.auth().currentUser;
-                console.log('user', user)
                 user.sendEmailVerification().then((res) => {
                     alert("an email has been sent to your mail acoount please verfiy")
-                    // user.emailVerified()
-                    console.log(user.emailVerified)
                     var userId = firebase.auth().currentUser.uid;
                     let userDetails = {
                         userId: userId,
@@ -63,7 +58,6 @@ export const userSignup = (obj, navigate) => {
                 }).catch((err) => {
                     alert(err)
                 })
-                // Email sent.
             }).catch(function (error) {
                 alert(error)
             });
@@ -79,15 +73,24 @@ export const sendverificationemail = () => {
 }
 
 export const logout = (navigate) => {
+    AsyncStorage.clear()
     return dispatch => {
         firebase.auth().signOut().then(function () {
             dispatch(AuthAction.logout())
             ToastAndroid.show("SignOut SUCCESSFUL !", ToastAndroid.SHORT);// Sign-out successful.
+          
             navigate("SignedOut");
 
         }).catch(function (error) {
             // An error happened.
             ToastAndroid.show(error, ToastAndroid.SHORT);
         });
+    }
+}
+export const alreadyLogin = (obj) => {
+    console.log(obj)
+    return dispatch => {
+        dispatch(AuthAction.alreadyLogin(obj))
+
     }
 }

@@ -1,30 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, Share } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Share, ScrollView } from 'react-native'
 import { NavigationActions } from 'react-navigation';
 import { Icon, Button, Header, Avatar } from 'react-native-elements';
-import OrderIcon from 'react-native-vector-icons/EvilIcons';
-import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
-import Help from 'react-native-vector-icons/Feather';
-import Circle from 'react-native-vector-icons/Entypo'
 import Puzzle from 'react-native-vector-icons/Foundation';
-import PercentageCircle from 'react-native-percentage-circle';
 import App from 'react-native-vector-icons/Ionicons';
-import Star from 'react-native-vector-icons/MaterialIcons';
 import Camera from 'react-native-vector-icons/Entypo';
 import * as ImagePicker from 'react-native-image-picker';
 
-
-// import { logout, shopkeeperSignup } from '../store/middleware/authMiddleWare'
 import { connect } from 'react-redux';
-
 const mapStateToProps = (state) => {
     return {
         userdetail: state.AuthReducers.detail
     }
 }
-
-
-
 class ShareComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -34,10 +22,9 @@ class ShareComponent extends React.Component {
                 uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
             },
         }
-
     }
-    static navigationOptions={
-        header:null
+    static navigationOptions = {
+        header: null
     }
     openCamera() {
         var options = {
@@ -63,18 +50,15 @@ class ShareComponent extends React.Component {
                         uri: "https://image.flaticon.com/icons/png/512/206/206853.png"
                     },
                 });
-                // var storageRef = firebase.storage().ref().child("content://com.dogoodapp.provider/app_images/Pictures/image-a2d03d21-71e5-4ca1-a220-763bff2d3302.jpg");
             }
         });
     }
     render() {
         const { navigate } = this.props.navigation;
-        console.log("userdetail", this.props.userdetail.name)
         var lettr = this.props.userdetail.name.split('')
         const firstletter = lettr[0]
         return (
             <View style={styles.container}>
-
                 <Header
                     outerContainerStyles={{ backgroundColor: '#FDD10C' }}
                     leftComponent={
@@ -87,92 +71,86 @@ class ShareComponent extends React.Component {
                     }
                     rightComponent={
                         <Icon name='home' color="white"
-                        onPress={()=>{navigate('Dashbord')}}
-                         />
+                            onPress={() => { navigate('Dashbord') }}
+                        />
                     }
                 />
+                <ScrollView contentContainerStyle={{minHeight:600}} >
+                    <View style={{
+                        width: 300,
+                        height: 180,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        justifyContent: 'space-around',
+                        backgroundColor: '#F8F8F8',
+                        paddingTop: 5,
+                        marginTop: 50
 
-                <View style={{
-                    width: 300,
-                    height: 180,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    justifyContent: 'space-around',
-                    backgroundColor: '#F8F8F8',
-                    paddingTop: 5,
-                    marginTop: 50
+                    }}>
+                        <View style={
+                            {
+                                flex: 1, display: 'flex', justifyContent: 'space-around',
+                                flexDirection: 'row', marginTop: 5
+                            }
+                        }>
 
-                }}>
-                    <View style={
-                        {
-                            flex: 1, display: 'flex', justifyContent: 'space-around',
-                            flexDirection: 'row', marginTop: 5
-                        }
-                    }>
-
-                        <Camera size={30} name="camera"
-                            style={{ marginLeft: 10, }}
-                            onPress={() => this.openCamera()}
-                        />
-                        <Text style={{
-                            textAlign: 'center',
-                            //  marginLeft: 'auto',
-                            // marginRight: 'auto',
-                            fontSize: 16
-                        }}>
-                            PICTURE
+                            <Camera size={30} name="camera"
+                                style={{ marginLeft: 10, }}
+                                onPress={() => this.openCamera()}
+                            />
+                            <Text style={{
+                                textAlign: 'center',
+                                fontSize: 16
+                            }}>
+                                PICTURE
                     </Text>
-                    <Text style={{
-                            textAlign: 'center',
-                            //  marginLeft: 'auto',
-                            // marginRight: 'auto',
-                            fontSize: 16
-                        }}>          
+                            <Text style={{
+                                textAlign: 'center',
+                                fontSize: 16
+                            }}>
+                            </Text>
+                        </View>
+                        <Avatar
+                            large
+                            rounded
+                            containerStyle={{
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                marginBottom: 20,
+                            }}
+                            source={
+                                this.state.avatarSource == null
+                                    ? this.state.defaultAvatar
+                                    : this.state.avatarSource
+                            }
+                            onPress={() => console.log("Works!")}
+                            activeOpacity={0.7}
+                        />
+                    </View>
+                    <View style={{ marginTop: 50 }}>
+                        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: '#5A5E60', fontFamily: 'RobotoCondensed-Regular' }}>
+                            Plant More
+                </Text>
+                        <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                            Take your picture smiling and  upload
+                    </Text>
+
+                        <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                            it other to see with the hashtag
+                    </Text>
+                        <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
+                            Do It Good
                     </Text>
                     </View>
-                    <Avatar
-                        large
-                        rounded
-                        containerStyle={{
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginBottom: 20,
-                            // marginTop: 20
-                        }}
-                        source={
-                            this.state.avatarSource == null
-                                ? this.state.defaultAvatar
-                                : this.state.avatarSource
-                        }
-                        onPress={() => console.log("Works!")}
-                        activeOpacity={0.7}
-                    />
-                </View>
-                <View style={{ marginTop: 50 }}>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: '#5A5E60', fontFamily: 'RobotoCondensed-Regular' }}>
-                        Plant More
-                </Text>
-
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
-                        Take your picture smiling and  upload
-                    </Text>
-
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
-                        it other to see with the hashtag
-                    </Text>
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: '#5C5D5F', fontFamily: 'Roboto-Light' }}>
-                        Do It Good
-                    </Text>
-                </View>
-                <Button title="Share it On Facebook"
-                    icon={{ name: 'share', size: 25 }}
-                    textStyle={{ fontSize: 20,fontFamily:'Roboto-Bold' }}
-                    buttonStyle={styles.button} />
+                    <Button title="Share it On Facebook"
+                        icon={{ name: 'share', size: 25 }}
+                        textStyle={{ fontSize: 20, fontFamily: 'Roboto-Bold' }}
+                        buttonStyle={styles.button} />
+                </ScrollView>
             </View>
         )
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -204,7 +182,6 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         width: 50, height: 50,
         paddingLeft: 15,
-        // paddingRight: 'auto',
         paddingTop: 10
     },
     profilename: {

@@ -6,23 +6,19 @@ import {
     Image,
     TouchableOpacity,
     AsyncStorage,
-    ToastAndroid,
-    BackAndroid,
     BackHandler
 } from "react-native";
 import { connect } from 'react-redux'
 import * as firebase from 'firebase'
 import { Header, FormInput, FormLabel, Button, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import SplashScreen from 'react-native-splash-screen'
-import { userLogin, sendverificationemail } from '../../store/middleware/authMiddleware'
-// import LoginIcon from 'react-native-vector-icons/SimpleLineIcons'
-import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
+import SplashScreen from 'react-native-splash-screen';
 
+import { userLogin, sendverificationemail, alreadyLogin } from '../../store/middleware/authMiddleware';
 const Accounts = [];
 class UserLogin extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             user: '',
             email: "",
@@ -30,17 +26,20 @@ class UserLogin extends Component {
             isLogin: false
         };
     }
-    componentDidMount() {
-        SplashScreen.hide();
-    }
-
     static navigationOptions = {
         header: null,
     }
+    componentDidMount() {
+        SplashScreen.hide();
+        let data = AsyncStorage.getItem('user')
+            .then((data) => {
+                console.log("-----------", JSON.parse(data))
+                if (data !== null) {
+                    this.props.alreadyLogin(JSON.parse(data))
+                    // this.props.login(obj, navigate)
+                }
+            })
 
-
-    handleBackButton() {
-        return true;
     }
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
@@ -101,22 +100,21 @@ class UserLogin extends Component {
                         textStyle={{ fontFamily: 'Times New Roman', fontWeight: 'bold' }}
                     />
                     <View >
-
+                        <View style={loginStyles.registerSuggestionText}>
+                            <Text>Not Registered</Text>
+                            <TouchableOpacity onPress={() => navigate("SignupScreen")}>
+                                <Text style={{ fontWeight: "bold" }}>Signup Now!</Text>
+                            </TouchableOpacity>
+                        </View>
                         {this.props.isVerified ?
-                            <View style={loginStyles.registerSuggestionText}>
-                                <Text>Not Registered</Text>
-                                <TouchableOpacity onPress={() => navigate("SignupScreen")}>
-                                    <Text style={{ fontWeight: "bold" }}>Signup Now!</Text>
-                                </TouchableOpacity>
-                            </View> :
-                            <TouchableOpacity onPress={() =>this.props.sendemail()}>
+                            <TouchableOpacity onPress={() => this.props.sendemail()}>
                                 <View style={loginStyles.registerSuggestionText} >
                                     <Text> your email is not verifed </Text>
                                     <Text> check your emai if not received? </Text>
                                     <Text style={{ fontWeight: "bold", marginTop: 20 }}>resend verification email!</Text>
                                 </View>
-                            </TouchableOpacity>}
-
+                            </TouchableOpacity>
+                            : null}
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -132,7 +130,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (payload, navigate) => { dispatch(userLogin(payload, navigate)) },
-        sendemail: () => { dispatch(sendverificationemail()) }
+        sendemail: () => { dispatch(sendverificationemail()) },
+        alreadyLogin: (obj) => { dispatch(alreadyLogin(obj)) }
 
     }
 }

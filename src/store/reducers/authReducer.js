@@ -2,7 +2,7 @@ import { AuthAction } from '../actions/authActions'
 const initialState = {
     isLoggedIn: false,
     detail: {},
-    verified: true
+    verified: false
 }
 
 export default function (state = initialState, action) {
@@ -15,12 +15,16 @@ export default function (state = initialState, action) {
             break;
         case AuthAction.LOGOUT:
             return {
-                isLoggedIn: false
+                isLoggedIn: false,detail:{}
             }
             break;
         case AuthAction.VERIFIEDEMAIL:
             return {
-                ...state, verified: false
+                ...state, verified: true
+            }
+            case AuthAction.ALREADYLOGIN:
+            return{
+                ...state,isLoggedIn:true,detail:action.payload
             }
         default:
             return state;

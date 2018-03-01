@@ -1,10 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
-import { NavigationActions } from 'react-navigation';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon, Button, Header, List, ListItem, Avatar } from 'react-native-elements';
-import OrderIcon from 'react-native-vector-icons/EvilIcons';
-import LoginIcon from 'react-native-vector-icons/SimpleLineIcons';
-import Help from 'react-native-vector-icons/Feather';
 import Circle from 'react-native-vector-icons/Entypo'
 import Puzzle from 'react-native-vector-icons/Foundation';
 import PercentageCircle from 'react-native-percentage-circle';
@@ -12,18 +8,9 @@ import App from 'react-native-vector-icons/Ionicons';
 import Star from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 class Profile extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    static navigationOptions = {
-        header: null
-    }
-
     render() {
         var lettr = this.props.userdetail.name.split('')
         const firstletter = lettr[0]
-        console.log("======", firstletter)
-        console.log(lettr[0])
         const { navigate } = this.props.navigation;
         return (
             <View>
@@ -34,8 +21,6 @@ class Profile extends React.Component {
                                 display: 'flex', flexDirection: 'row',
                                 justifyContent: 'center',
                                 position: 'absolute',
-                                // zIndex: 1
-                                // height:400
                             }}>
                             <Image
                                 style={{ height: 130, width: '100%', marginLeft: 'auto', marginRight: 'auto' }}
@@ -48,8 +33,6 @@ class Profile extends React.Component {
                                 large
                                 rounded
                                 title={firstletter}
-
-                                onPress={() => console.log("Works!")}
                                 activeOpacity={0.7}
                                 containerStyle={
                                     styles.logo
@@ -62,7 +45,6 @@ class Profile extends React.Component {
                         </View>
                     </View>
                 </View>
-
                 <ScrollView contentContainerStyle={{ height: 900 }} >
                     <View style={{ marginTop: 15, flexDirection: 'row', marginLeft: 40 }}>
                         <Puzzle
@@ -105,7 +87,6 @@ class Profile extends React.Component {
                             onPress={() => { navigate('Dashbord') }}
                             buttonStyle={styles.button} />
                     </View>
-
                 </ScrollView>
             </View>
         )

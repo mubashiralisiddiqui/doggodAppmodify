@@ -5,8 +5,7 @@ export class AuthAction {
     static LOGOUT = "LOGOUT";
     static VERIFIEDEMAIL = "VERIFIEDEMAIL";
     static VERIFIEDUSER = 'VERIFIEDUSER';
-
-
+    static ALREADYLOGIN = 'ALREADYLOGIN';
     static userLogin = (payload) => ({
         type: AuthAction.LOGIN,
         payload
@@ -23,4 +22,8 @@ export class AuthAction {
         type: AuthAction.VERIFIEDUSER,
             payload
     }
+    static alreadyLogin=(payload)=>({
+        type:AuthAction.ALREADYLOGIN,
+        payload
+    })
 }

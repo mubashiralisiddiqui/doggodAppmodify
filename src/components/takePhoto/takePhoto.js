@@ -1,9 +1,7 @@
 
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, ToastAndroid } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image, ToastAndroid, ScrollView } from 'react-native';
 import { Button, Header, Icon, Avatar, CheckBox } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
-import Information from 'react-native-vector-icons/MaterialIcons';
 import Camera from 'react-native-vector-icons/Entypo';
 import * as ImagePicker from 'react-native-image-picker';
 import firebase from 'firebase';
@@ -20,7 +18,7 @@ export default class TakePhot extends React.Component {
         this.openCamera = this.openCamera.bind(this)
     }
     static navigationOptions = {
-       header:null
+        header: null
     }
     openCamera() {
         var options = {
@@ -30,7 +28,6 @@ export default class TakePhot extends React.Component {
                 path: "images"
             }
         };
-
         ImagePicker.launchImageLibrary(options, response => {
             if (response.didCancel) {
                 console.log("User cancelled image picker");
@@ -40,7 +37,6 @@ export default class TakePhot extends React.Component {
                 console.log("User tapped custom button: ", response.customButton);
             } else {
                 let source = { uri: response.uri };
-                console.log("source", source)
                 this.setState({
                     avatarSource: source,
                     defaultAvatar: {
@@ -63,7 +59,6 @@ export default class TakePhot extends React.Component {
     }
     render() {
         const { navigate } = this.props.navigation;
-        console.log("navigate", navigate)
         return (
             <View style={{ flex: 1, backgroundColor: '#ffff' }}>
                 <Header
@@ -82,7 +77,7 @@ export default class TakePhot extends React.Component {
                         />
                     }
                 />
-                <View style={{ justifyContent: 'center', flex: 1, marginTop: -40 }}>
+                <ScrollView contentContainerStyle={{ justifyContent: 'center', flex: 1, marginTop: -40, minHeight: 600 }}>
                     <Avatar
                         xlarge
                         rounded
@@ -116,35 +111,33 @@ export default class TakePhot extends React.Component {
                             multiline={true}
                             placeholder="write your review"
                             underlineColorAndroid="transparent"
-                            style={{ marginTop: -30, paddingLeft: 10, fontSize: 15,fontFamily:'Roboto-Light' }}
+                            style={{ marginTop: -30, paddingLeft: 10, fontSize: 15, fontFamily: 'Roboto-Light' }}
                         />
                     </View>
-                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}> */}
-                        <CheckBox
-                            center
-                            title='I am submitting my original task'
-                            iconRight
-                            iconType='material'
-                            checkedIcon='check'
-                            uncheckedIcon='check'
-                            checkedColor='green'
-                            checked={this.state.checked}
-                            containerStyle={{ 
-                                backgroundColor: '#F8F8F8', width: 300 ,
-                                marginLeft:'auto',
-                                marginRight:'auto',
-                                marginTop:15
-                            }}
-                            textStyle={this.state.checked?{ fontFamily: 'Roboto-Light',fontWeight:'italic',color:'green'}:{fontFamily: 'Roboto-Light',fontWeight:'italic'}}
-                            onPress={() => { this.toggleCheked() }}
-                        />
-                    {/* </View> */}
+                    <CheckBox
+                        center
+                        title='I am submitting my original task'
+                        iconRight
+                        iconType='material'
+                        checkedIcon='check'
+                        uncheckedIcon='check'
+                        checkedColor='green'
+                        checked={this.state.checked}
+                        containerStyle={{
+                            backgroundColor: '#F8F8F8', width: 300,
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 15
+                        }}
+                        textStyle={this.state.checked ? { fontFamily: 'Roboto-Light', fontWeight: 'italic', color: 'green' } : { fontFamily: 'Roboto-Light', fontWeight: 'italic' }}
+                        onPress={() => { this.toggleCheked() }}
+                    />
                     <Button title="Do It Good"
                         onPress={() => { this.handleSubmit() }}
                         buttonStyle={styles.button}
                         textStyle={{ fontSize: 20, fontFamily: 'Roboto-Bold' }}
                     />
-                </View>
+                </ScrollView>
             </View>
         )
     }

@@ -24,7 +24,7 @@ class DrawerContainer extends React.Component {
     }
     render() {
         const { navigation } = this.props;
-        var lettr = this.props.userdetail.name.split('')
+        var lettr = this.props.userdetail.name&&this.props.userdetail.name.split('')
         const firstletter = lettr[0]
         return (
             <View style={styles.container}>
@@ -36,7 +36,7 @@ class DrawerContainer extends React.Component {
                     }}>
 
                     <Image
-                        style={{ flex: 1, height: 200, width: undefined, marginTop: -35, }}
+                        style={{ flex: 1, height: 200, width: undefined, marginTop: -50, }}
                         source={require('../images/download.jpg')}
                         resizeMode="contain"
                     />
@@ -44,7 +44,7 @@ class DrawerContainer extends React.Component {
                 <Avatar
                     large
                     rounded
-                    title={firstletter}
+                    title={firstletter}s
 
                     onPress={() => console.log("Works!")}
                     activeOpacity={0.7}
@@ -57,7 +57,7 @@ class DrawerContainer extends React.Component {
                 <Text style={{ color: 'white', fontSize: 18, marginLeft: 25, fontWeight: 'bold', marginTop: 10 }}>
                     {this.props.userdetail.name}
                 </Text>
-                <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 10 }}>
+                <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 20 }}>
                     <Icon name="person" color="#5A5E61" />
                     <Text
                         onPress={() => navigation.navigate('ProfileScreen')}
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f6f6f6',
+      
     },
     uglyDrawerItem: {
         fontSize: 18,

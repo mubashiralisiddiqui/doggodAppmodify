@@ -28,7 +28,6 @@ class ShopKeeperSignup extends React.Component {
     static navigationOptions = {
         header: null
     }
-   
     signup() {
         const { navigate } = this.props.navigation
         let obj = {
@@ -94,17 +93,11 @@ class ShopKeeperSignup extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-
                 </View>
             </KeyboardAwareScrollView>
         )
     }
 }
-// const mapStateToProps = (state) => {
-//     return {
-//         deviceID: state.deviceIDReducer.deviceID
-//     }
-// }
 const mapDispatchToProps = (dispatch) => {
     return {
         signup: (payload, navigate) => { dispatch(userSignup(payload, navigate)) }
